@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Listening Practice Test 2</title>
+<style>
+  :root{
+    --blue-900:#0d2b57;
+    --blue-700:#154a91;
+    --blue-600:#1c5fb8;
+    --blue-100:#e8f0fc;
+    --blue-050:#f4f8fd;
+    --red-600:#b3261e;
+    --red-050:#fdecec;
+    --ink:#152238;
+    --ink-soft:#4c5a70;
+    --line:#d7e0ee;
+    --white:#ffffff;
+    --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+    background:var(--white);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Source Serif 4","Georgia",serif;
+    font-weight:600;
+    color:var(--blue-900);
+    margin:0 0 .4em 0;
+  }
+  ::selection{ background:#bcd6fb; }
+  .hidden{ display:none !important; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  #topbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 22px;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  #topbar .brand{ display:flex; align-items:baseline; gap:10px; }
+  #topbar .brand small{ color:var(--ink-soft); font-size:.8rem; letter-spacing:.02em; }
+  #timerWrap{ display:flex; align-items:center; gap:8px; font-variant-numeric:tabular-nums; }
+  #timerLabel{ font-size:.78rem; color:var(--ink-soft); }
+  #timerDisplay{
+    font-size:1.25rem; font-weight:700; color:var(--blue-700);
+    border:1px solid var(--blue-100); background:var(--blue-050);
+    padding:4px 12px; border-radius:var(--radius);
+    min-width:82px; text-align:center;
+  }
+  #timerDisplay.warning{ color:var(--red-600); background:var(--red-050); border-color:#f3caca; }
+
+  #sectionNav{
+    display:flex; gap:6px; padding:10px 22px;
+    border-bottom:1px solid var(--line);
+    background:var(--blue-050);
+    flex-wrap:wrap;
+  }
+  .navBtn{
+    border:1px solid var(--line); background:var(--white); color:var(--blue-700);
+    padding:7px 14px; border-radius:999px; font-size:.88rem; font-weight:600;
+  }
+  .navBtn[disabled]{ opacity:.45; cursor:not-allowed; }
+  .navBtn.active{ background:var(--blue-600); color:var(--white); border-color:var(--blue-600); }
+  #submitBtn{
+    margin-left:auto; background:var(--red-600); color:var(--white);
+    border:1px solid var(--red-600); padding:7px 16px; border-radius:999px;
+    font-weight:700; font-size:.88rem;
+  }
+  #submitBtn:hover{ background:#951d17; }
+
+  #content{ max-width:980px; margin:0 auto; padding:24px 22px 80px; }
+  .test-section{ animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:0} to{opacity:1} }
+
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    border-bottom:2px solid var(--blue-900);
+    padding-bottom:8px; margin-bottom:18px; flex-wrap:wrap; gap:10px;
+  }
+  .section-head .qrange{ color:var(--ink-soft); font-size:.9rem; }
+
+  .audio-panel{
+    border:1px solid var(--line); background:var(--blue-050); border-radius:var(--radius);
+    padding:14px 16px; margin-bottom:22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .audio-panel .lockIcon{
+    font-size:1.15rem; color:var(--blue-700); border:1px solid var(--blue-100); background:var(--white);
+    width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .audio-panel .meta{ flex:1; min-width:180px; }
+  .audio-panel .meta strong{ display:block; font-size:.92rem; }
+  .audio-panel .meta span{ color:var(--ink-soft); font-size:.8rem; }
+  .playBtn{
+    background:var(--blue-600); color:var(--white); border:none;
+    padding:8px 18px; border-radius:999px; font-weight:700; font-size:.88rem;
+  }
+  .playBtn[disabled]{ opacity:.5; cursor:not-allowed; }
+  .progressTrack{ flex:1 1 160px; height:6px; background:var(--line); border-radius:4px; overflow:hidden; min-width:120px; }
+  .progressFill{ height:100%; width:0%; background:var(--blue-600); transition:width .25s linear; }
+  .audioStatus{ font-size:.8rem; color:var(--ink-soft); flex:none; min-width:150px; text-align:right;}
+
+  .toolbar{ display:flex; gap:8px; margin-bottom:12px; }
+  .tbtn{
+    border:1px solid var(--line); background:var(--white); color:var(--blue-700);
+    padding:5px 12px; border-radius:var(--radius); font-size:.82rem; font-weight:600;
+  }
+  .tbtn.on{ background:var(--blue-600); color:var(--white); border-color:var(--blue-600); }
+
+  mark.hl{ background:#ffe07a; padding:0 1px; border-radius:2px; }
+
+  .qblock{ border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:16px; background:var(--white); }
+  .qblock h3{ font-size:1rem; margin-bottom:10px; color:var(--ink); font-family:inherit; font-weight:700; }
+  .qsub{ color:var(--ink-soft); font-size:.85rem; margin:-4px 0 10px; }
+
+  .fillLine{ margin:8px 0; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .fillLine .qnum{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:22px; height:22px; border-radius:50%;
+    background:var(--blue-900); color:var(--white); font-size:.72rem; font-weight:700; flex:none;
+  }
+  .fillLine label{ flex:none; }
+  .fillLine input[type=text]{
+    border:none; border-bottom:2px solid var(--blue-600); background:transparent;
+    font-size:.95rem; padding:3px 4px; width:170px; font-family:inherit; color:var(--ink);
+  }
+  .fillLine input[type=text]:focus{ outline:none; border-color:var(--blue-900); }
+  .fillLine input[disabled], select[disabled]{ background:#f6f7f9; color:var(--ink-soft); }
+
+  .optionRow{ display:flex; flex-direction:column; gap:6px; margin:8px 0 4px 30px; }
+  .optionRow label{ display:flex; gap:8px; align-items:flex-start; font-size:.92rem; }
+  .optionRow input{ margin-top:3px; }
+
+  select.matchSel{
+    border:1px solid var(--blue-600); border-radius:4px; padding:4px 6px;
+    font-family:inherit; font-size:.9rem; color:var(--ink); background:var(--white);
+  }
+  .matchList{ margin-top:6px; }
+  .matchList .box{
+    border:1px dashed var(--line); border-radius:var(--radius);
+    background:var(--blue-050); padding:10px 14px; margin-bottom:14px; font-size:.88rem;
+  }
+
+  .tableGrid{ display:grid; grid-template-columns: 1.3fr 1fr; gap:2px; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:6px; }
+  .tableGrid > div{ padding:10px 12px; background:var(--white); font-size:.9rem; }
+  .tableGrid > div:nth-child(4n+1), .tableGrid > div:nth-child(4n+2){ background:var(--blue-050); }
+  .tableGrid input[type=text]{
+    border:none; border-bottom:2px solid var(--blue-600); background:transparent;
+    font-size:.9rem; padding:2px 4px; width:90px; font-family:inherit; color:var(--ink);
+  }
+
+  .footNav{ display:flex; justify-content:space-between; margin-top:20px; }
+  .footNav button{
+    background:var(--white); border:1px solid var(--blue-600); color:var(--blue-700);
+    padding:8px 18px; border-radius:999px; font-weight:600;
+  }
+  .footNav button:hover{ background:var(--blue-100); }
+  .footNav button[disabled]{ opacity:.4; cursor:not-allowed; }
+
+  #landing{ max-width:620px; margin:60px auto; text-align:left; }
+  #landing ul{ color:var(--ink-soft); padding-left:20px; }
+  #landing li{ margin-bottom:6px; }
+  #startBtn{
+    background:var(--blue-600); color:var(--white); border:none;
+    padding:12px 26px; border-radius:999px; font-weight:700; font-size:1rem; margin-top:16px;
+  }
+  #startBtn:hover{ background:var(--blue-900); }
+  .noteRed{ color:var(--red-600); font-size:.85rem; }
+
+  #results .scoreCard{
+    background:var(--blue-050); border:1px solid var(--blue-100);
+    border-radius:var(--radius); padding:22px; text-align:center; margin-bottom:24px;
+  }
+  #results .scoreCard .big{ font-size:2.4rem; font-weight:800; color:var(--blue-900); }
+  .reviewRow{
+    display:flex; gap:10px; padding:8px 4px; border-bottom:1px solid var(--line);
+    font-size:.9rem; align-items:flex-start; flex-wrap:wrap;
+  }
+  .reviewRow .num{ font-weight:700; width:28px; flex:none; }
+  .reviewRow .yourAns{ min-width:140px; }
+  .reviewRow .correct{ color:#1a7a3c; }
+  .reviewRow .wrong{ color:var(--red-600); text-decoration:line-through; }
+  .tag{ font-size:.72rem; font-weight:700; padding:1px 8px; border-radius:999px; flex:none; }
+  .tag.ok{ background:#e5f6ea; color:#1a7a3c; }
+  .tag.no{ background:var(--red-050); color:var(--red-600); }
+
+  @media (max-width:640px){
+    .audio-panel{ flex-direction:column; align-items:stretch; }
+    .audioStatus{ text-align:left; }
+    .fillLine input[type=text]{ width:140px; }
+    .tableGrid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">
+    <h1 style="font-size:1.15rem;margin:0;">IELTS Listening Practice — Test 2</h1>
+    <small>Cambridge-style test</small>
+  </div>
+  <div id="timerWrap" class="hidden">
+    <span id="timerLabel">TIME REMAINING</span>
+    <span id="timerDisplay">40:00</span>
+  </div>
+</div>
+
+<nav id="sectionNav" class="hidden">
+  <button class="navBtn" data-target="section1">Section 1</button>
+  <button class="navBtn" data-target="section2">Section 2</button>
+  <button class="navBtn" data-target="section3">Section 3</button>
+  <button class="navBtn" data-target="section4">Section 4</button>
+  <button id="submitBtn">Submit test</button>
+</nav>
+
+<div id="content">
+
+  <!-- LANDING -->
+  <section id="landing">
+    <h2>Before you begin</h2>
+    <ul>
+      <li>The test has <strong>4 sections</strong> and <strong>40 questions</strong>.</li>
+      <li>You have <strong>40 minutes</strong> in total. The timer starts as soon as you click Start and cannot be paused.</li>
+      <li>Each section's audio plays <strong>once only</strong>. You cannot pause, rewind or skip ahead.</li>
+      <li>You may select text in the questions to highlight it, the same as on the real test paper.</li>
+      <li>You can move between sections at any time, but you cannot replay audio you've already played.</li>
+      <li>After you submit, you'll see your score and the correct answers.</li>
+    </ul>
+    <p class="noteRed">Make sure your sound is on before you start — the audio cannot be replayed once played.</p>
+    <button id="startBtn">Start test</button>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section id="section1" class="test-section hidden">
+    <div class="section-head"><h2>Section 1</h2><span class="qrange">Questions 1–10</span></div>
+
+    <div class="audio-panel" data-audio-panel="1">
+      <div class="lockIcon">🔒</div>
+      <div class="meta"><strong>Section 1 audio</strong><span>section1.mp3 — plays once, cannot be paused or rewound</span></div>
+      <button class="playBtn" data-play="1">▶ Play audio</button>
+      <div class="progressTrack"><div class="progressFill" data-fill="1"></div></div>
+      <div class="audioStatus" data-status="1">Not started</div>
+      <audio data-audio="1" preload="none" tabindex="-1" src="section1.mp3"></audio>
+    </div>
+
+    <div class="toolbar"><button class="tbtn" data-highlight-toggle>🖊 Highlight mode: off</button></div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 1–5</h3>
+      <p class="qsub">Complete the information below. Write NO MORE THAN ONE WORD OR A NUMBER for each answer.</p>
+      <p><strong>Apartment for rent</strong></p>
+      <div class="fillLine"><label>Street:</label><label>Bridge street</label></div>
+      <div class="fillLine"><span class="qnum">1</span><label>Street №:</label><input type="text" data-q="1"></div>
+      <div class="fillLine"><span class="qnum">2</span><label>Included utilities: Gas, heat, water,</label><input type="text" data-q="2"><label>, phone</label></div>
+      <div class="fillLine"><span class="qnum">3</span><label>Not included utilities:</label><input type="text" data-q="3"></div>
+      <div class="fillLine"><span class="qnum">4</span><label>Public transport: Underground,</label><input type="text" data-q="4"></div>
+      <div class="fillLine"><span class="qnum">5</span><label>Tenant's name: John</label><input type="text" data-q="5"></div>
+    </div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 6–8</h3>
+      <p class="qsub">Choose THREE letters, A–F. Which THREE things should the caller bring to the meeting?</p>
+      <div class="optionRow">
+        <label><input type="checkbox" data-qgroup="6-8" value="A"> A &nbsp;Driving license</label>
+        <label><input type="checkbox" data-qgroup="6-8" value="B"> B &nbsp;Passport</label>
+        <label><input type="checkbox" data-qgroup="6-8" value="C"> C &nbsp;Tax bill</label>
+        <label><input type="checkbox" data-qgroup="6-8" value="D"> D &nbsp;Employment contract</label>
+        <label><input type="checkbox" data-qgroup="6-8" value="E"> E &nbsp;Reference from a friend or colleague</label>
+        <label><input type="checkbox" data-qgroup="6-8" value="F"> F &nbsp;Reference from an employer</label>
+      </div>
+    </div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 9–10</h3>
+      <p class="qsub">Choose the correct letter, A, B, or C.</p>
+      <p><strong>9</strong> What time do the caller and apartment manager decide to meet?</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q9" data-q="9" value="A"> A &nbsp;5:30 PM</label>
+        <label><input type="radio" name="q9" data-q="9" value="B"> B &nbsp;6:00 PM</label>
+        <label><input type="radio" name="q9" data-q="9" value="C"> C &nbsp;6:30 PM</label>
+      </div>
+      <p style="margin-top:14px;"><strong>10</strong> Where do they decide to meet?</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q10" data-q="10" value="A"> A &nbsp;Near the manager's apartment</label>
+        <label><input type="radio" name="q10" data-q="10" value="B"> B &nbsp;At the caller's future apartment</label>
+        <label><input type="radio" name="q10" data-q="10" value="C"> C &nbsp;At the office</label>
+      </div>
+    </div>
+
+    <div class="footNav"><button disabled>← Previous</button><button data-nextsection="section2">Next: Section 2 →</button></div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="section2" class="test-section hidden">
+    <div class="section-head"><h2>Section 2</h2><span class="qrange">Questions 11–20</span></div>
+
+    <div class="audio-panel" data-audio-panel="2">
+      <div class="lockIcon">🔒</div>
+      <div class="meta"><strong>Section 2 audio</strong><span>section2.mp3 — plays once, cannot be paused or rewound</span></div>
+      <button class="playBtn" data-play="2">▶ Play audio</button>
+      <div class="progressTrack"><div class="progressFill" data-fill="2"></div></div>
+      <div class="audioStatus" data-status="2">Not started</div>
+      <audio data-audio="2" preload="none" tabindex="-1" src="section2.mp3"></audio>
+    </div>
+
+    <div class="toolbar"><button class="tbtn" data-highlight-toggle>🖊 Highlight mode: off</button></div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 11–16</h3>
+      <p class="qsub">Complete the table below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.</p>
+      <div class="tableGrid">
+        <div><strong>Ticket type</strong></div><div><strong>Ticket cost</strong></div>
+        <div>Adult's ticket</div><div><span class="qnum" style="margin-right:6px;">11</span><input type="text" data-q="11" style="width:70px;"> pounds</div>
+        <div>Child's ticket (for children between 5 and 15 years)</div><div><span class="qnum" style="margin-right:6px;">12</span><input type="text" data-q="12" style="width:70px;"> pounds</div>
+        <div>Children under <span class="qnum" style="margin:0 6px;">13</span><input type="text" data-q="13" style="width:50px;"> years</div><div>free</div>
+        <div>Reduced tariff (for full-time students and disabled visitors)</div><div><span class="qnum" style="margin-right:6px;">14</span><input type="text" data-q="14" style="width:70px;"> pounds</div>
+        <div><span class="qnum" style="margin-right:6px;">15</span><input type="text" data-q="15" style="width:150px;"><br><span style="color:var(--ink-soft);font-size:.8rem;">(can be used by up to 2 adults and 3 children)</span></div><div>55 pounds</div>
+        <div>Annual membership</div><div><span class="qnum" style="margin-right:6px;">16</span><input type="text" data-q="16" style="width:70px;"> pounds</div>
+      </div>
+    </div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 17–20</h3>
+      <p class="qsub">Complete the information about ordering tickets below. Write NO MORE THAN TWO WORDS for each answer.</p>
+      <div class="fillLine"><span class="qnum">17</span><label>The easiest way is to buy your tickets</label><input type="text" data-q="17">.</div>
+      <div class="fillLine"><span class="qnum">18</span><label>Make sure you receive a</label><input type="text" data-q="18"><label>of your booking!</label></div>
+      <div class="fillLine"><span class="qnum">19</span><label>The second way is to book your tickets</label><input type="text" data-q="19">.</div>
+      <div class="fillLine"><span class="qnum">20</span><label>If you don't want to plan ahead, you can purchase tickets</label><input type="text" data-q="20"><label>in ticket kiosks.</label></div>
+    </div>
+
+    <div class="footNav"><button data-prevsection="section1">← Previous</button><button data-nextsection="section3">Next: Section 3 →</button></div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="section3" class="test-section hidden">
+    <div class="section-head"><h2>Section 3</h2><span class="qrange">Questions 21–30</span></div>
+
+    <div class="audio-panel" data-audio-panel="3">
+      <div class="lockIcon">🔒</div>
+      <div class="meta"><strong>Section 3 audio</strong><span>section3.mp3 — plays once, cannot be paused or rewound</span></div>
+      <button class="playBtn" data-play="3">▶ Play audio</button>
+      <div class="progressTrack"><div class="progressFill" data-fill="3"></div></div>
+      <div class="audioStatus" data-status="3">Not started</div>
+      <audio data-audio="3" preload="none" tabindex="-1" src="section3.mp3"></audio>
+    </div>
+
+    <div class="toolbar"><button class="tbtn" data-highlight-toggle>🖊 Highlight mode: off</button></div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 21–23</h3>
+      <p class="qsub">Complete the information below. Write NO MORE THAN THREE WORDS for each answer.</p>
+      <div class="fillLine"><span class="qnum">21</span><label>The total course duration is</label><input type="text" data-q="21">.</div>
+      <div class="fillLine"><span class="qnum">22</span><label>During the final project, students will work in teams of</label><input type="text" data-q="22">.</div>
+      <div class="fillLine"><span class="qnum">23</span><label>The professor said the key thing in marketing strategy is to</label><input type="text" data-q="23">.</div>
+    </div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 24–28</h3>
+      <p class="qsub">Choose FIVE letters, A–I. What FIVE modules does the course include?</p>
+      <div class="optionRow">
+        <label><input type="checkbox" data-qgroup="24-28" value="A"> A &nbsp;Marketing</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="B"> B &nbsp;Design of custom logos</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="C"> C &nbsp;Product management</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="D"> D &nbsp;Branding</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="E"> E &nbsp;E-commerce</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="F"> F &nbsp;Advertising</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="G"> G &nbsp;Analytics</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="H"> H &nbsp;Customer attraction</label>
+        <label><input type="checkbox" data-qgroup="24-28" value="I"> I &nbsp;Business strategies</label>
+      </div>
+    </div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 29–30</h3>
+      <p class="qsub">Complete the information below. Write NO MORE THAN TWO WORDS for each answer.</p>
+      <div class="fillLine"><span class="qnum">29</span><label>The next lecture is in the big classroom on the</label><input type="text" data-q="29">.</div>
+      <div class="fillLine"><span class="qnum">30</span><label>Students need to take their last week</label><input type="text" data-q="30">.</div>
+    </div>
+
+    <div class="footNav"><button data-prevsection="section2">← Previous</button><button data-nextsection="section4">Next: Section 4 →</button></div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="section4" class="test-section hidden">
+    <div class="section-head"><h2>Section 4</h2><span class="qrange">Questions 31–40</span></div>
+
+    <div class="audio-panel" data-audio-panel="4">
+      <div class="lockIcon">🔒</div>
+      <div class="meta"><strong>Section 4 audio</strong><span>section4.mp3 — plays once, cannot be paused or rewound</span></div>
+      <button class="playBtn" data-play="4">▶ Play audio</button>
+      <div class="progressTrack"><div class="progressFill" data-fill="4"></div></div>
+      <div class="audioStatus" data-status="4">Not started</div>
+      <audio data-audio="4" preload="none" tabindex="-1" src="section4.mp3"></audio>
+    </div>
+
+    <div class="toolbar"><button class="tbtn" data-highlight-toggle>🖊 Highlight mode: off</button></div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 31–35</h3>
+      <p class="qsub">Choose the correct letter, A, B, or C.</p>
+
+      <p><strong>31</strong> Initially, the Great Wall was built to</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q31" data-q="31" value="A"> A &nbsp;prevent invaders from entering China</label>
+        <label><input type="radio" name="q31" data-q="31" value="B"> B &nbsp;function as a psychological barrier</label>
+        <label><input type="radio" name="q31" data-q="31" value="C"> C &nbsp;show the country's enduring strength</label>
+      </div>
+
+      <p style="margin-top:14px;"><strong>32</strong> The construction of the Great Wall started</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q32" data-q="32" value="A"> A &nbsp;in third century B.C.</label>
+        <label><input type="radio" name="q32" data-q="32" value="B"> B &nbsp;in 220 B.C.</label>
+        <label><input type="radio" name="q32" data-q="32" value="C"> C &nbsp;in 390 A.D.</label>
+      </div>
+
+      <p style="margin-top:14px;"><strong>33</strong> The Chinese name of the monument is</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q33" data-q="33" value="A"> A &nbsp;the Great Wall</label>
+        <label><input type="radio" name="q33" data-q="33" value="B"> B &nbsp;the Big Wall</label>
+        <label><input type="radio" name="q33" data-q="33" value="C"> C &nbsp;the Long Wall</label>
+      </div>
+
+      <p style="margin-top:14px;"><strong>34</strong> The wall as it exists today was constructed mainly by</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q34" data-q="34" value="A"> A &nbsp;Qin dynasty</label>
+        <label><input type="radio" name="q34" data-q="34" value="B"> B &nbsp;Northern Wei dynasty</label>
+        <label><input type="radio" name="q34" data-q="34" value="C"> C &nbsp;Ming dynasty</label>
+      </div>
+
+      <p style="margin-top:14px;"><strong>35</strong> During the Ming dynasty, the wall's main purpose was</p>
+      <div class="optionRow">
+        <label><input type="radio" name="q35" data-q="35" value="A"> A &nbsp;to be a military fortification</label>
+        <label><input type="radio" name="q35" data-q="35" value="B"> B &nbsp;to protect caravans traveling along the trade routes</label>
+        <label><input type="radio" name="q35" data-q="35" value="C"> C &nbsp;to contribute to the defense of the country</label>
+      </div>
+    </div>
+
+    <div class="qblock" data-highlight-zone>
+      <h3>Questions 36–40</h3>
+      <p class="qsub">Complete the notes below. Write NO MORE THAN THREE WORDS for each answer.</p>
+      <div class="fillLine"><span class="qnum">36</span><label>Before the use of bricks, the Great Wall was mainly built from stones, wood and</label><input type="text" data-q="36">.</div>
+      <div class="fillLine"><span class="qnum">37</span><label>Many western sections of the wall are constructed from mud and thus are more</label><input type="text" data-q="37">.</div>
+      <div class="fillLine"><span class="qnum">38</span><label>A part of the wall in Gansu province may disappear in the next 20 years, due to</label><input type="text" data-q="38">.</div>
+      <div class="fillLine"><span class="qnum">39</span><label>To see the wall from the Moon would require superhuman</label><input type="text" data-q="39">.</div>
+      <div class="fillLine"><span class="qnum">40</span><label>The Great Wall is generally recognized as one of the most impressive</label><input type="text" data-q="40"><label>in history.</label></div>
+    </div>
+
+    <div class="footNav"><button data-prevsection="section3">← Previous</button><button id="finalSubmitBtn">Submit test →</button></div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="hidden">
+    <div class="scoreCard">
+      <div>Your score</div>
+      <div class="big" id="scoreBig">0 / 40</div>
+      <div id="scoreNote" style="color:var(--ink-soft);font-size:.9rem;"></div>
+    </div>
+    <div id="reviewList"></div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- answer key ----------------
+     Each value is an array of acceptable answers (normalized, case-insensitive). */
+  var KEY = {
+    1:["32"],
+    2:["electricity"],
+    3:["internet"],
+    4:["bus"],
+    5:["hooper"],
+    9:["c"],
+    10:["b"],
+    11:["24","twenty-four","twenty four"],
+    12:["18","eighteen"],
+    13:["5","five"],
+    14:["19","nineteen"],
+    15:["family ticket"],
+    16:["107"],
+    17:["online"],
+    18:["confirmation email","confirmation e-mail"],
+    19:["by telephone","by phone","telephone"],
+    20:["in person"],
+    21:["seven weeks"],
+    22:["five people"],
+    23:["grab people's attention","grab peoples attention","grab attention"],
+    29:["ground floor"],
+    30:["assignment"],
+    31:["a"], 32:["b"], 33:["c"], 34:["c"], 35:["c"],
+    36:["rammed earth"],
+    37:["susceptible to erosion"],
+    38:["frequent sandstorms"],
+    39:["eyesight"],
+    40:["architectural feats"]
+  };
+  var GROUP_KEY = { "6-8": ["B","D","E"], "24-28": ["A","D","E","F","H"] };
+
+  var TOTAL_QUESTIONS = 40;
+  var TEST_SECONDS = 40 * 60;
+  var SECTIONS = ["section1","section2","section3","section4"];
+
+  var timeLeft = TEST_SECONDS;
+  var timerInterval = null;
+  var submitted = false;
+
+  function $(sel, root){ return (root||document).querySelector(sel); }
+  function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  function norm(s){ return (s||"").trim().toLowerCase().replace(/\s+/g," "); }
+
+  $("#startBtn").addEventListener("click", function(){
+    $("#landing").classList.add("hidden");
+    $("#sectionNav").classList.remove("hidden");
+    $("#timerWrap").classList.remove("hidden");
+    showSection("section1");
+    startTimer();
+  });
+
+  function startTimer(){
+    updateTimerDisplay();
+    timerInterval = setInterval(function(){
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft <= 0){
+        clearInterval(timerInterval);
+        submitTest(true);
+      }
+    }, 1000);
+  }
+  function updateTimerDisplay(){
+    var m = Math.floor(timeLeft/60), s = timeLeft%60;
+    var disp = $("#timerDisplay");
+    disp.textContent = (m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+    disp.classList.toggle("warning", timeLeft <= 300);
+  }
+
+  function showSection(id){
+    $all(".test-section").forEach(function(sec){ sec.classList.add("hidden"); });
+    $("#"+id).classList.remove("hidden");
+    $all(".navBtn").forEach(function(b){ b.classList.toggle("active", b.dataset.target === id); });
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  $all(".navBtn[data-target]").forEach(function(btn){ btn.addEventListener("click", function(){ showSection(btn.dataset.target); }); });
+  $all("[data-nextsection]").forEach(function(btn){ btn.addEventListener("click", function(){ showSection(btn.dataset.nextsection); }); });
+  $all("[data-prevsection]").forEach(function(btn){ btn.addEventListener("click", function(){ showSection(btn.dataset.prevsection); }); });
+
+  SECTIONS.forEach(function(_, idx){
+    var n = idx + 1;
+    var audio = $('audio[data-audio="'+n+'"]');
+    var playBtn = $('[data-play="'+n+'"]');
+    var fill = $('[data-fill="'+n+'"]');
+    var status = $('[data-status="'+n+'"]');
+
+    audio.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+    audio.controlsList = "nodownload noplaybackrate nofullscreen";
+
+    playBtn.addEventListener("click", function(){
+      playBtn.disabled = true;
+      playBtn.textContent = "Playing…";
+      status.textContent = "Playing — do not close this tab";
+      audio.play().catch(function(){
+        status.textContent = "Couldn't play audio. Check the file is uploaded (section"+n+".mp3) and try again.";
+        playBtn.disabled = false;
+        playBtn.textContent = "▶ Play audio";
+      });
+    });
+
+    audio.addEventListener("timeupdate", function(){
+      if (audio.duration){ fill.style.width = (audio.currentTime/audio.duration*100) + "%"; }
+    });
+
+    audio.addEventListener("ended", function(){
+      fill.style.width = "100%";
+      status.textContent = "Finished — audio cannot be replayed";
+      playBtn.textContent = "Audio finished";
+    });
+  });
+
+  $all("[data-highlight-toggle]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var zoneContainer = btn.closest(".test-section");
+      var isOn = btn.classList.toggle("on");
+      btn.textContent = isOn ? "🖊 Highlight mode: on" : "🖊 Highlight mode: off";
+      zoneContainer.dataset.highlighting = isOn ? "1" : "0";
+    });
+  });
+
+  document.addEventListener("mouseup", function(){
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0) return;
+    var range = sel.getRangeAt(0);
+    var container = range.commonAncestorContainer;
+    var zone = (container.nodeType === 1 ? container : container.parentElement);
+    var block = zone ? zone.closest("[data-highlight-zone]") : null;
+    if (!block) return;
+    var section = block.closest(".test-section");
+    if (!section || section.dataset.highlighting !== "1") return;
+    try{
+      var mark = document.createElement("mark");
+      mark.className = "hl";
+      range.surroundContents(mark);
+      sel.removeAllRanges();
+    }catch(e){ /* selection spans multiple elements — skip (prototype limitation) */ }
+  });
+
+  function getVal(id){
+    var el = $('[data-q="'+id+'"]:not([type=checkbox]):not([type=radio])');
+    if (el) return el.value;
+    var radio = $('input[type=radio][data-q="'+id+'"]:checked');
+    return radio ? radio.value : "";
+  }
+
+  function gradeAndRender(){
+    var correctCount = 0;
+    var rows = [];
+    var allNums = [];
+    for (var i=1;i<=40;i++) allNums.push(i);
+
+    var groupedNums = {};
+    Object.keys(GROUP_KEY).forEach(function(gk){
+      gk.split("-").forEach(function(){});
+      var parts = gk.split("-");
+      var start = parseInt(parts[0],10), end = parseInt(parts[1],10);
+      for (var n=start;n<=end;n++) groupedNums[n] = gk;
+    });
+
+    allNums.forEach(function(qn){
+      if (groupedNums[qn]) return; // handled separately
+      var userVal = getVal(qn);
+      var accepted = KEY[qn] || [];
+      var isCorrect = accepted.some(function(a){ return norm(a) === norm(userVal); });
+      if (isCorrect) correctCount++;
+      rows.push({num:qn, your:userVal, correct:accepted.join(" / "), ok:isCorrect});
+    });
+
+    Object.keys(GROUP_KEY).forEach(function(gk){
+      var parts = gk.split("-");
+      var nums = [];
+      for (var n=parseInt(parts[0],10); n<=parseInt(parts[1],10); n++) nums.push(n);
+      var checked = $all('input[type=checkbox][data-qgroup="'+gk+'"]:checked').map(function(c){return c.value;});
+      var correctSet = GROUP_KEY[gk].slice().sort();
+      var gotSet = checked.slice().sort();
+      var isCorrect = gotSet.length === correctSet.length && gotSet.every(function(v,i){return v===correctSet[i];});
+      nums.forEach(function(n){
+        if (isCorrect) correctCount++;
+        rows.push({num:n, your: checked.join(", ") || "(none)", correct: correctSet.join(" / "), ok:isCorrect});
+      });
+    });
+
+    rows.sort(function(a,b){ return a.num - b.num; });
+
+    $("#scoreBig").textContent = correctCount + " / " + TOTAL_QUESTIONS;
+    $("#scoreNote").textContent = bandNote(correctCount);
+
+    var list = $("#reviewList");
+    list.innerHTML = "";
+    rows.forEach(function(r){
+      var div = document.createElement("div");
+      div.className = "reviewRow";
+      div.innerHTML =
+        '<span class="num">'+r.num+'</span>' +
+        '<span class="tag '+(r.ok?"ok":"no")+'">'+(r.ok?"Correct":"Incorrect")+'</span>' +
+        '<span class="yourAns '+(r.ok?"correct":"wrong")+'">Your answer: '+ (r.your || "(blank)") +'</span>' +
+        (r.ok ? '' : '<span class="yourAns correct">Correct answer: '+r.correct+'</span>');
+      list.appendChild(div);
+    });
+  }
+
+  function bandNote(score){
+    if (score >= 39) return "Excellent — Band 9 range.";
+    if (score >= 35) return "Very strong — Band 8 range.";
+    if (score >= 30) return "Good — Band 7 range.";
+    if (score >= 23) return "Solid — Band 6 range.";
+    if (score >= 16) return "Fair — Band 5 range.";
+    return "Keep practising — review the transcript and try again.";
+  }
+
+  function lockAllInputs(){
+    $all("input, select").forEach(function(el){ el.disabled = true; });
+    $all(".playBtn").forEach(function(b){ b.disabled = true; });
+  }
+
+  function submitTest(auto){
+    if (submitted) return;
+    submitted = true;
+    clearInterval(timerInterval);
+    lockAllInputs();
+    $all(".test-section").forEach(function(s){ s.classList.add("hidden"); });
+    $("#sectionNav").classList.add("hidden");
+    $("#timerWrap").classList.add("hidden");
+    $("#results").classList.remove("hidden");
+    gradeAndRender();
+    if (auto){
+      var note = document.createElement("p");
+      note.className = "noteRed";
+      note.textContent = "Time's up — your test was submitted automatically.";
+      $("#results").insertBefore(note, $("#results").firstChild);
+    }
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  $("#submitBtn").addEventListener("click", function(){ confirmSubmit(); });
+  $("#finalSubmitBtn").addEventListener("click", function(){ confirmSubmit(); });
+  function confirmSubmit(){
+    if (window.confirm("Submit the test now? You won't be able to change your answers afterwards.")){
+      submitTest(false);
+    }
+  }
+
+})();
+</script>
+</body>
+</html>
